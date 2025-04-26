@@ -46,7 +46,7 @@ Before running the project, ensure you have the following installed:
 
 ### Frontend
 
-1. **Navigate to frontend folder**:
+1. **Navigate to frontend folder**: From the root folder
    ```bash
   
    cd health-system-frontend
@@ -89,7 +89,13 @@ Before running the project, ensure you have the following installed:
 
 ### Backend
 
-1. **Configure the Database**:
+1. **Navigate to backend folder**: From the root folder
+   ```bash
+  
+   cd health-system-backend
+   ```
+
+2. **Configure the Database**:
    - Update the `application.properties` file with your PostgreSQL credentials:
      ```properties
      spring.datasource.url=jdbc:postgresql://localhost:5432/health_system
@@ -97,7 +103,10 @@ Before running the project, ensure you have the following installed:
      spring.datasource.password=your_password
      ```
 
-2. **Run the Backend**:
+   - Check the port at which your flutter is running and update security configurations at 
+   health_system_backend/config/SecurityConfig.java and add it to allow requests.
+
+3. **Run the Backend**:
 - Start docker containers
 
 ```bash
@@ -126,6 +135,7 @@ docker-compose up -d
   - `POST /client-details/create`: Add a new client.
 
 - **Program Management API**:
+ - `POST /programs/create`: Add a new program.
   - `GET /programs/{programId}/unenrolled-clients/{doctorId}`: Fetch unenrolled clients for a program.
   - `POST /enrollments/create`: Enroll a client in a program.
 
