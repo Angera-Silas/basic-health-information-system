@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/programs")
@@ -52,5 +53,31 @@ public class ProgramController {
     @GetMapping("/all")
     public ResponseEntity<List<ProgramInformation>> getAllProgramInformation() {
         return ResponseEntity.ok(programService.getAllProgramInformation());
+    }
+
+    @GetMapping("/doctor/{doctorId}")
+    public ResponseEntity<List<ProgramInformation>> getProgramsByDoctorId(@PathVariable Long doctorId) {
+        List<ProgramInformation> programs = programService.getProgramsByDoctorId(doctorId);
+        return ResponseEntity.ok(programs);
+    }
+
+    @GetMapping("/{programId}/unenrolled-clients/{doctorId}")
+    public ResponseEntity<List<Object>> getUnenrolledClients(
+            @PathVariable Long programId,
+            @PathVariable Long doctorId) {
+        List<Object[]> unenrolledClients = programService.findUnenrolledClientsByDoctorIdAndProgramId(doctorId,
+                programId);
+
+        // Transform the result into a more readable format (e.g., JSON objects)
+        List<Object> response = unenrolledClients.stream()
+                .map(client -> {
+                    return new Object() {
+                        public final Long id = (Long) client[0];
+                        public final String name = (String) client[1];
+                    };
+                })
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(response);
     }
 }

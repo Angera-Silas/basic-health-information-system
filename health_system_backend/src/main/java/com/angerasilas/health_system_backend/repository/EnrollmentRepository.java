@@ -175,4 +175,12 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
                 WHERE d.id = :doctorId
             """)
     List<EnrollmentInformationDto> findEnrollmentInformationByDoctorId(Long doctorId);
+
+    @Query("""
+    SELECT COUNT(e) 
+    FROM Enrollment e 
+    JOIN e.program p 
+    WHERE p.doctorDetails.id = :doctorId
+""")
+long countEnrollmentsByDoctorId(Long doctorId);
 }

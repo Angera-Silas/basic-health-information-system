@@ -105,4 +105,23 @@ public class ClientDetailsServiceImpl implements ClientDetailsService {
         return clients;
     }
 
+    @Override
+    public List<ClientInformationDto> getAllClientInformationByDoctorId(Long doctorId) {
+        // Fetch all clients registered by the doctor
+        List<ClientInformationDto> clients = clientDetailsRepository.findAllClientInformationByDoctorId(doctorId);
+
+        // For each client, fetch their list of program names and set it
+        clients.forEach(client -> {
+            List<String> programNames = clientDetailsRepository.findProgramNamesByClientId(client.getId());
+            client.setPrograms(programNames);
+        });
+
+        return clients;
+    }
+
+    @Override
+    public List<Object[]> findUnenrolledProgramsByClientIdAndDoctorId(Long clientId, Long doctorId) {
+        return clientDetailsRepository.findUnenrolledProgramsByClientIdAndDoctorId(clientId, doctorId);
+    }
+
 }

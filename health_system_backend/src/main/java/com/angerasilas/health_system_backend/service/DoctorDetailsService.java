@@ -8,6 +8,7 @@ import java.util.List;
 public interface DoctorDetailsService {
     List<DoctorDetailsDto> getAllDoctorDetails();
     DoctorDetailsDto getDoctorDetailsById(Long id);
+    DoctorDetailsDto getDoctorDetailsByUserId(Long userId);
     DoctorDetailsDto createDoctorDetails(DoctorDetailsDto doctorDetailsDto);
     DoctorDetailsDto updateDoctorDetails(Long id, DoctorDetailsDto doctorDetailsDto);
     void deleteDoctorDetails(Long id);

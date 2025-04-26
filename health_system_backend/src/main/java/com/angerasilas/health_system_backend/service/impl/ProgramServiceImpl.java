@@ -8,6 +8,8 @@ import com.angerasilas.health_system_backend.mapper.ProgramMapper;
 import com.angerasilas.health_system_backend.repository.DoctorDetailsRepository;
 import com.angerasilas.health_system_backend.repository.ProgramRepository;
 import com.angerasilas.health_system_backend.service.ProgramService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +21,7 @@ public class ProgramServiceImpl implements ProgramService {
     private final ProgramRepository programRepository;
     private final DoctorDetailsRepository doctorDetailsRepository;
 
+   
     public ProgramServiceImpl(ProgramRepository programRepository, DoctorDetailsRepository doctorDetailsRepository) {
         this.programRepository = programRepository;
         this.doctorDetailsRepository = doctorDetailsRepository;
@@ -93,5 +96,15 @@ public class ProgramServiceImpl implements ProgramService {
         });
 
         return programs;
+    }
+
+    @Override
+    public List<ProgramInformation> getProgramsByDoctorId(Long doctorId) {
+        return programRepository.findAllProgramInformationByDoctorId(doctorId);
+    }
+
+    @Override
+    public List<Object[]> findUnenrolledClientsByDoctorIdAndProgramId(Long doctorId, Long programId) {
+        return programRepository.findUnenrolledClientsByDoctorIdAndProgramId(doctorId, programId);
     }
 }

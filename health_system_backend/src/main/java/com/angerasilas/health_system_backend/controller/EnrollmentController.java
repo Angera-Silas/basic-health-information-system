@@ -68,4 +68,5 @@ public class EnrollmentController {
     public ResponseEntity<List<EnrollmentInformationDto>> getEnrollmentInformationByDoctorId(@PathVariable Long doctorId) {
         return ResponseEntity.ok(enrollmentService.getEnrollmentInformationByDoctorId(doctorId));
     }
+    
 }

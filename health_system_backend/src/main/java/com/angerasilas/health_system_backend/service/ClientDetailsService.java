@@ -13,4 +13,6 @@ public interface ClientDetailsService {
     void deleteClientDetails(Long id);
     ClientInformationDto getClientFullInfo(Long clientId);
     List<ClientInformationDto> getAllClientFullInfo();
+    List<ClientInformationDto> getAllClientInformationByDoctorId(Long doctorId);
+    List<Object[]> findUnenrolledProgramsByClientIdAndDoctorId(Long clientId, Long doctorId);
 }

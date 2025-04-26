@@ -13,4 +13,6 @@ public interface ProgramService {
     void deleteProgram(Long id);
     ProgramInformation getProgramInformationById(Long programId);
     List<ProgramInformation> getAllProgramInformation();
+    List<ProgramInformation> getProgramsByDoctorId(Long doctorId);
+    List<Object[]> findUnenrolledClientsByDoctorIdAndProgramId(Long doctorId, Long programId);
 }

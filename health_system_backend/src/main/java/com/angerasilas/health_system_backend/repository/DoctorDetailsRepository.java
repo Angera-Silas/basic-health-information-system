@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DoctorDetailsRepository extends JpaRepository<DoctorDetails, Long> {
 
+    DoctorDetails findByUserId(Long userId);
     @Query("""
         SELECT new com.angerasilas.health_system_backend.dto.DoctorInformationDto(
             d.id,

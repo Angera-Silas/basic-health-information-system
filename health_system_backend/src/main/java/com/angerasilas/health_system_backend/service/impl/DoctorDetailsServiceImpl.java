@@ -40,6 +40,15 @@ public class DoctorDetailsServiceImpl implements DoctorDetailsService {
     }
 
     @Override
+    public DoctorDetailsDto getDoctorDetailsByUserId(Long userId) {
+        DoctorDetails doctorDetails = doctorDetailsRepository.findByUserId(userId);
+        if (doctorDetails == null) {
+            throw new RuntimeException("DoctorDetails not found for user ID: " + userId);
+        }
+        return DoctorDetailsMapper.toDto(doctorDetails);
+    }
+
+    @Override
     public DoctorDetailsDto createDoctorDetails(DoctorDetailsDto doctorDetailsDto) {
         UserEntity user = userRepository.findById(doctorDetailsDto.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
