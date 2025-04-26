@@ -18,9 +18,7 @@ The **Basic Health Information System** is a comprehensive platform designed to 
   - Enroll clients in programs.
   - View program details.
 
-- **Real-Time Search**:
-  - Search for clients by name in real-time.
-  - Filter and display matching results dynamically.
+- **And many more...**
 
 ---
 
@@ -41,7 +39,7 @@ Before running the project, ensure you have the following installed:
 
 1. **Clone the Project Repository**:
    ```bash
-   git clone https://github.com/your-username/health-system.git
+   git clone https://github.com/Angera-Silas/basic-health-information-system.git
    cd health-system-backend
    ```
 
@@ -124,6 +122,7 @@ docker-compose up -d
 - **Client Management API**:
   - `GET /client-details/by-doctor/{doctorId}`: Fetch all clients for a specific doctor.
   - `GET /client-details/full-info/{clientId}`: Fetch detailed information about a client.
+  - `GET /client-details/full-info`: Fetch detailed information about clients.
   - `POST /client-details/create`: Add a new client.
 
 - **Program Management API**:
@@ -161,8 +160,3 @@ Contributions are welcome! To contribute:
 
 ---
 
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
----
