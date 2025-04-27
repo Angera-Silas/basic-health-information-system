@@ -4,6 +4,8 @@ import '../services/api_service.dart';
 import '../models/enrollment_information.dart';
 
 class EnrollmentScreen extends StatefulWidget {
+  const EnrollmentScreen({super.key});
+
   @override
   _EnrollmentScreenState createState() => _EnrollmentScreenState();
 }
@@ -41,7 +43,6 @@ class _EnrollmentScreenState extends State<EnrollmentScreen> {
         isLoading = false;
       });
     } catch (e) {
-      print("Error fetching enrollments: $e");
       setState(() {
         isLoading = false;
       });
@@ -58,7 +59,6 @@ class _EnrollmentScreenState extends State<EnrollmentScreen> {
       );
       showEnrollmentDetailsPopup(enrollmentDetails);
     } catch (e) {
-      print("Error fetching enrollment details: $e");
     }
   }
 

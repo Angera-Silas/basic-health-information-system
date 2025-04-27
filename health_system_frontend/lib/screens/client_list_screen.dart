@@ -4,6 +4,8 @@ import 'package:health_system_frontend/services/api_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ClientScreen extends StatefulWidget {
+  const ClientScreen({super.key});
+
   @override
   _ClientScreenState createState() => _ClientScreenState();
 }
@@ -36,17 +38,16 @@ class _ClientScreenState extends State<ClientScreen> {
       isLoading = true;
     });
     try {
-      print("Fetching clients for doctorId: $doctorId"); // Debugging
+      // Debugging
       final data = await ApiService.getData(
         "/client-details/by-doctor/$doctorId",
       );
-      print("API Response: $data"); // Debugging
+      // Debugging
       setState(() {
         clients = data ?? []; // Ensure clients is not null
         isLoading = false;
       });
     } catch (e) {
-      print("Error fetching clients: $e");
       setState(() {
         isLoading = false;
       });
@@ -55,14 +56,13 @@ class _ClientScreenState extends State<ClientScreen> {
 
   Future<void> fetchClientDetails(int clientId) async {
     try {
-      print("Fetching details for clientId: $clientId"); // Debugging
+      // Debugging
       final clientDetails = await ApiService.getData(
         "/client-details/full-info/$clientId",
       );
-      print("Client Details: $clientDetails"); // Debugging
+      // Debugging
       showClientDetailsPopup(ClientInformation.fromJson(clientDetails));
     } catch (e) {
-      print("Error fetching client details: $e");
     }
   }
 
@@ -75,7 +75,6 @@ class _ClientScreenState extends State<ClientScreen> {
         unenrolledPrograms = data;
       });
     } catch (e) {
-      print("Error fetching unenrolled clients: $e");
     }
   }
 
@@ -99,7 +98,6 @@ class _ClientScreenState extends State<ClientScreen> {
       ).showSnackBar(SnackBar(content: Text("Clients enrolled successfully")));
       fetchClients(); // Refresh the clients list
     } catch (e) {
-      print("Error enrolling clients: $e");
     }
   }
 
@@ -138,7 +136,6 @@ class _ClientScreenState extends State<ClientScreen> {
       });
       fetchClients(); // Refresh the list after adding a client
     } catch (e) {
-      print("Error adding client: $e");
     }
   }
 
@@ -308,12 +305,7 @@ class _ClientScreenState extends State<ClientScreen> {
     );
   }
 
-  void showSearchDialog() async {
-  // Ensure clients are fetched before showing the dialog
-  if (clients.isEmpty) {
-    await fetchClients();
-  }
-
+  void showSearchDialog() {
   final TextEditingController searchController = TextEditingController();
 
   showDialog(
@@ -322,24 +314,32 @@ class _ClientScreenState extends State<ClientScreen> {
       return StatefulBuilder(
         builder: (context, setState) {
           List<dynamic> searchResults = [];
+          bool isLoading = false;
 
-          void performSearch(String query) {
+          // Fetch clients by name from the backend
+          Future<void> fetchClientsByName(String keyword) async {
             setState(() {
-              if (query.isEmpty) {
-                searchResults = [];
-              } else {
-                searchResults = clients
-                    .where((client) => client['name']
-                        .toLowerCase()
-                        .contains(query.toLowerCase()))
-                    .toList();
-              }
+              isLoading = true;
             });
+            try {
+              final data = await ApiService.getData("/client-details/by-name/$keyword");
+              setState(() {
+                searchResults = data ?? [];
+                isLoading = false;
+              });
+            } catch (e) {
+              setState(() {
+                isLoading = false;
+              });
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text("Error fetching clients: $e")),
+              );
+            }
           }
 
           return Dialog(
             child: Container(
-              width: 1000, // Set the width of the dialog
+              width: 1300, // Set the width of the dialog
               height: 700, // Set the height of the dialog
               padding: EdgeInsets.all(20),
               child: Column(
@@ -353,38 +353,58 @@ class _ClientScreenState extends State<ClientScreen> {
                     ),
                   ),
                   SizedBox(height: 20),
-                  TextField(
-                    controller: searchController,
-                    onChanged: performSearch,
-                    decoration: InputDecoration(
-                      labelText: "Search",
-                      prefixIcon: Icon(Icons.search),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: searchController,
+                          decoration: InputDecoration(
+                            labelText: "Enter Name",
+                            prefixIcon: Icon(Icons.search),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
+                      SizedBox(width: 10),
+                      ElevatedButton(
+                        onPressed: () {
+                          final keyword = searchController.text.trim();
+                          if (keyword.isNotEmpty) {
+                            fetchClientsByName(keyword);
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("Please enter a client name")),
+                            );
+                          }
+                        },
+                        child: Text("Submit"),
+                      ),
+                    ],
                   ),
                   SizedBox(height: 20),
                   Expanded(
-                    child: searchResults.isEmpty
-                        ? Center(child: Text("No results found"))
-                        : ListView.builder(
-                            itemCount: searchResults.length,
-                            itemBuilder: (context, index) {
-                              final client = searchResults[index];
-                              return ListTile(
-                                title: Text(client['name']),
-                                subtitle: Text(
-                                  client['programs']?.join(", ") ??
-                                      "No Program",
-                                ),
-                                onTap: () {
-                                  Navigator.of(ctx).pop(); // Close the dialog
-                                  fetchClientDetails(client['id']);
+                    child: isLoading
+                        ? Center(child: CircularProgressIndicator())
+                        : searchResults.isEmpty
+                            ? Center(child: Text("No results found"))
+                            : ListView.builder(
+                                itemCount: searchResults.length,
+                                itemBuilder: (context, index) {
+                                  final client = searchResults[index];
+                                  return ListTile(
+                                    title: Text(client['name']),
+                                    subtitle: Text(
+                                      client['programs']?.join(", ") ?? "No Program",
+                                    ),
+                                    onTap: () {
+                                      Navigator.of(ctx).pop(); // Close the dialog
+                                      fetchClientDetails(client['id']);
+                                    },
+                                  );
                                 },
-                              );
-                            },
-                          ),
+                              ),
                   ),
                 ],
               ),
@@ -395,6 +415,7 @@ class _ClientScreenState extends State<ClientScreen> {
     },
   );
 }
+  
   void showEnrollProgramsPopup(int clientId) async {
     await fetchUnenrolledPrograms(clientId);
 
@@ -485,7 +506,6 @@ class _ClientScreenState extends State<ClientScreen> {
       ).showSnackBar(SnackBar(content: Text("Programs enrolled successfully")));
       fetchClients(); // Refresh the client list
     } catch (e) {
-      print("Error enrolling programs: $e");
     }
   }
 

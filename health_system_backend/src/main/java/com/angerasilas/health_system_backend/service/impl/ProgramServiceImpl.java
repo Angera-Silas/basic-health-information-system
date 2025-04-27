@@ -9,7 +9,6 @@ import com.angerasilas.health_system_backend.repository.DoctorDetailsRepository;
 import com.angerasilas.health_system_backend.repository.ProgramRepository;
 import com.angerasilas.health_system_backend.service.ProgramService;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

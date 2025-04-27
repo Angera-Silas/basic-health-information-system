@@ -5,6 +5,8 @@ import 'package:health_system_frontend/models/doctor_information.dart';
 import 'dashboard_screen.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -30,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       // Perform login
-      final response = await ApiService.postData("/users/login", {
+      final response = await ApiService.postDataWithoutAuth("/users/login", {
         "email": email,
         "password": password,
       });
@@ -41,6 +43,9 @@ class _LoginScreenState extends State<LoginScreen> {
         throw Exception("Doctor ID not found in login response.");
       }
 
+      final String token = response['token'];
+
+
       // Fetch doctor information
       final doctorInfoResponse = await ApiService.getData("/doctor-details/information/$doctorId");
       final doctorInformation = DoctorInformation.fromJson(doctorInfoResponse);
@@ -48,6 +53,8 @@ class _LoginScreenState extends State<LoginScreen> {
       // Store doctor information in shared preferences
       final prefs = await SharedPreferences.getInstance();
       await prefs.setInt('doctorId', doctorId);
+      await prefs.setString('token', token);
+      await prefs.setString('email', email);
       prefs.setString('doctorInformation', doctorInformation.toJsonString());
 
       // Navigate to the dashboard

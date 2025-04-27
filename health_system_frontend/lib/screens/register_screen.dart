@@ -55,7 +55,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     });
 
     try {
-      final response = await ApiService.postData("/users/create", {
+      final response = await ApiService.postDataWithoutAuth("/users/create", {
         "name": username,
         "email": email,
         "password": password,

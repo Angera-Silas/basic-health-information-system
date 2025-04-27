@@ -33,37 +33,42 @@ Before running the project, ensure you have the following installed:
 5. **Docker**: For containerized database setup (optional).
 
 ---
+
 ## How to Run
 
 ### Project
 
 1. **Clone the Project Repository**:
+
    ```bash
    git clone https://github.com/Angera-Silas/basic-health-information-system.git
    cd health-system-backend
    ```
 
-
 ### Frontend
 
 1. **Navigate to frontend folder**: From the root folder
+
    ```bash
   
    cd health-system-frontend
    ```
 
 2. **Install Dependencies**:
+
    ```bash
    flutter pub get
    ```
 
 3. **Configure API Endpoint**:
    Update the `ApiService` class in the frontend to point to your backend API URL:
+
    ```dart
    static const String baseUrl = "http://localhost:8088/api";
    ```
 
 4. **Run the Frontend**:
+
    ```bash
    flutter run
    ```
@@ -90,6 +95,7 @@ Before running the project, ensure you have the following installed:
 ### Backend
 
 1. **Navigate to backend folder**: From the root folder
+
    ```bash
   
    cd health-system-backend
@@ -97,16 +103,18 @@ Before running the project, ensure you have the following installed:
 
 2. **Configure the Database**:
    - Update the `application.properties` file with your PostgreSQL credentials:
+
      ```properties
      spring.datasource.url=jdbc:postgresql://localhost:5432/health_system
      spring.datasource.username=your_username
      spring.datasource.password=your_password
      ```
 
-   - Check the port at which your flutter is running and update security configurations at 
+   - Check the port at which your flutter is running and update security configurations at
    health_system_backend/config/SecurityConfig.java and add it to allow requests.
 
 3. **Run the Backend**:
+
 - Start docker containers
 
 ```bash
@@ -114,6 +122,7 @@ docker-compose up -d
 ```
 
 - Run springboot
+
 ```bash
 ./mvnw clean install
 
@@ -135,15 +144,16 @@ docker-compose up -d
   - `POST /client-details/create`: Add a new client.
 
 - **Program Management API**:
- - `POST /programs/create`: Add a new program.
-  - `GET /programs/{programId}/unenrolled-clients/{doctorId}`: Fetch unenrolled clients for a program.
-  - `POST /enrollments/create`: Enroll a client in a program.
+- `POST /programs/create`: Add a new program.
+- `GET /programs/{programId}/unenrolled-clients/{doctorId}`: Fetch unenrolled clients for a program.
+- `POST /enrollments/create`: Enroll a client in a program.
 
 ---
 
 ## Troubleshooting
 
 ### API Errors
+
 - Check the API URL in the `ApiService` class.
 - Use tools like Postman to verify the backend endpoints.
 
@@ -155,18 +165,23 @@ Contributions are welcome! To contribute:
 
 1. Fork the repository.
 2. Create a new branch:
+
    ```bash
    git checkout -b feature-name
    ```
+
 3. Commit your changes:
+
    ```bash
    git commit -m "Add feature-name"
    ```
+
 4. Push to your branch:
+
    ```bash
    git push origin feature-name
    ```
+
 5. Open a pull request.
 
 ---
-

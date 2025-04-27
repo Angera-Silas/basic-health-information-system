@@ -82,4 +82,9 @@ public class ClientDetailsController {
 
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/by-name/{name}")
+    public ResponseEntity<List<ClientInformationDto>> getClientInformationByName(@PathVariable String name) {
+        return ResponseEntity.ok(clientDetailsService.getClientInformationByName(name));
+    }
 }

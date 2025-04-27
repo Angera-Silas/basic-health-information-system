@@ -10,6 +10,8 @@ import 'client_list_screen.dart';
 import '../services/api_service.dart';
 
 class DashboardScreen extends StatefulWidget {
+  const DashboardScreen({super.key});
+
   @override
   _DashboardScreenState createState() => _DashboardScreenState();
 }
@@ -44,7 +46,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
         isLoading = false;
       });
     } catch (e) {
-      print("Error fetching dashboard data: $e");
       setState(() {
         isLoading = false;
       });

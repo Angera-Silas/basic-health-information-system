@@ -15,4 +15,5 @@ public interface ClientDetailsService {
     List<ClientInformationDto> getAllClientFullInfo();
     List<ClientInformationDto> getAllClientInformationByDoctorId(Long doctorId);
     List<Object[]> findUnenrolledProgramsByClientIdAndDoctorId(Long clientId, Long doctorId);
+    List<ClientInformationDto> getClientInformationByName(String name);
 }

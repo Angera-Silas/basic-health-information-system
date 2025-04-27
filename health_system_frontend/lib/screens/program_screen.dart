@@ -3,6 +3,8 @@ import 'package:health_system_frontend/services/api_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProgramScreen extends StatefulWidget {
+  const ProgramScreen({super.key});
+
   @override
   _ProgramScreenState createState() => _ProgramScreenState();
 }
@@ -39,7 +41,6 @@ class _ProgramScreenState extends State<ProgramScreen> {
         isLoading = false;
       });
     } catch (e) {
-      print("Error fetching programs: $e");
       setState(() {
         isLoading = false;
       });
@@ -55,7 +56,6 @@ class _ProgramScreenState extends State<ProgramScreen> {
         unenrolledClients = data;
       });
     } catch (e) {
-      print("Error fetching unenrolled clients: $e");
     }
   }
 
@@ -79,7 +79,6 @@ class _ProgramScreenState extends State<ProgramScreen> {
       ).showSnackBar(SnackBar(content: Text("Clients enrolled successfully")));
       fetchPrograms(); // Refresh the program list
     } catch (e) {
-      print("Error enrolling clients: $e");
     }
   }
 
@@ -158,7 +157,6 @@ class _ProgramScreenState extends State<ProgramScreen> {
       );
       showProgramDetailsPopup(programDetails);
     } catch (e) {
-      print("Error fetching program details: $e");
     }
   }
 
@@ -170,7 +168,6 @@ class _ProgramScreenState extends State<ProgramScreen> {
         context,
       ).showSnackBar(SnackBar(content: Text("Program deleted successfully")));
     } catch (e) {
-      print("Error deleting program: $e");
     }
   }
 
@@ -191,7 +188,6 @@ class _ProgramScreenState extends State<ProgramScreen> {
       });
       fetchPrograms(); // Refresh the list after creating a program
     } catch (e) {
-      print("Error creating program: $e");
     }
   }
 

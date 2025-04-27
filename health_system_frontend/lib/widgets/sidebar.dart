@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class Sidebar extends StatelessWidget {
   final Function(String) onMenuSelect;
 
-  Sidebar({required this.onMenuSelect});
+  const Sidebar({super.key, required this.onMenuSelect});
 
   @override
   Widget build(BuildContext context) {
